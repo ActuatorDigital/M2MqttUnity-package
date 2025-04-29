@@ -1,0 +1,17 @@
+{
+  "name": "com.actuator.m2mqttunity",
+  "displayName": "m2mqttunity",
+  "version": "0.0.1",
+  "unity": "2021.3",
+  "author": "Actuator Digital",
+  "homepage": "https://github.com/ActuatorDigital/M2MqttUnity-package",
+  "keywords": [
+    "Unity Editor",
+    "Actuator Digital"
+  ],
+  "dependencies": {
+  },
+  "relatedPackages": {},
+  "description": "Package version of M2MqttUnity",
+  "type": "tool"
+}
