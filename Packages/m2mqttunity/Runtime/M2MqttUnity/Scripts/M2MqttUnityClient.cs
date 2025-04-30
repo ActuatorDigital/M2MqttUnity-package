@@ -64,7 +64,7 @@ namespace M2MqttUnity
         /// <summary>
         /// Wrapped MQTT client
         /// </summary>
-        protected MqttClient client;
+        public MqttClient client;
 
         private List<MqttMsgPublishEventArgs> messageQueue1 = new List<MqttMsgPublishEventArgs>();
         private List<MqttMsgPublishEventArgs> messageQueue2 = new List<MqttMsgPublishEventArgs>();
