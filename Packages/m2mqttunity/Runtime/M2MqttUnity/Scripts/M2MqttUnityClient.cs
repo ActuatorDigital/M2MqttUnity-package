@@ -58,7 +58,9 @@ namespace M2MqttUnity
         public string mqttUserName = null;
         [Tooltip("Password for the MQTT broker. Keep blank if no password is required.")]
         public string mqttPassword = null;
-        
+
+        [SerializeField] private bool _verbose = false;
+
         /// <summary>
         /// Wrapped MQTT client
         /// </summary>
@@ -74,11 +76,13 @@ namespace M2MqttUnity
         /// <summary>
         /// Event fired when a connection is successfully established
         /// </summary>
-        public event Action ConnectionSucceeded;
+        public event Action<MqttClient> ConnectionSucceeded;
         /// <summary>
         /// Event fired when failing to connect
         /// </summary>
         public event Action ConnectionFailed;
+
+        public event Action<MqttMsgPublishEventArgs> ProcessMessage;
 
         /// <summary>
         /// Connect to the broker using current settings.
@@ -118,11 +122,7 @@ namespace M2MqttUnity
             Debug.LogFormat("Connected to {0}:{1}...\n", brokerAddress, brokerPort.ToString());
 
             SubscribeTopics();
-
-            if (ConnectionSucceeded != null)
-            {
-                ConnectionSucceeded();
-            }
+            ConnectionSucceeded?.Invoke(client);
         }
 
         /// <summary>
@@ -185,7 +185,8 @@ namespace M2MqttUnity
         /// </summary>
         protected virtual void DecodeMessage(string topic, byte[] message)
         {
-            Debug.LogFormat("Message received on topic: {0}", topic);
+            if (_verbose)
+                Debug.LogFormat("Message received on topic: {0}", topic);
         }
 
         /// <summary>
@@ -233,6 +234,7 @@ namespace M2MqttUnity
         {
             foreach (MqttMsgPublishEventArgs msg in backMessageQueue)
             {
+                ProcessMessage?.Invoke(msg);
                 DecodeMessage(msg.Topic, msg.Message);
             }
             backMessageQueue.Clear();
